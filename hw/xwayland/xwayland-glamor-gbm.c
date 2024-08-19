@@ -285,7 +285,11 @@ xwl_glamor_gbm_create_pixmap_for_bo(ScreenPtr screen, struct gbm_bo *bo,
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     glEGLImageTargetTexture2DOES(GL_TEXTURE_2D, xwl_pixmap->image);
-    if (eglGetError() != EGL_SUCCESS)
+
+    int gl_error = glGetError();
+    int egl_error = eglGetError();
+
+    if (egl_error != EGL_SUCCESS || gl_error != GL_NO_ERROR)
       goto error;
 
     glBindTexture(GL_TEXTURE_2D, 0);
